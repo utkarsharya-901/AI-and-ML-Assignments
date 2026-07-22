@@ -1,0 +1,32 @@
+1. ObjectiveTo construct and train a Reinforcement Learning agent capable of safely landing a spacecraft on a designated landing pad on the moon's surface, balancing fuel efficiency and safety considerations.
+
+2. Environment DetailsThe LunarLander-v2 (or v3) environment from Gymnasium is a widely used benchmark for testing RL algorithms.
+
+State Space (Continuous): The environment provides an 8-dimensional state vector for observation:
+
+Horizontal coordinate (x)
+Vertical coordinate (y)
+Horizontal speed
+Vertical speed
+Angle
+Angular speed
+Left leg ground contact (Boolean flag)
+Right leg ground contact (Boolean flag)
+
+Action Space (Discrete): The agent can perform one of 4 possible actions:
+0: Do nothing
+1: Fire left orientation engine
+2: Fire main engine
+3: Fire right orientation engine
+
+Reward Function: The goal is to maximize cumulative return. The agent receives +100 to +140 points for landing on the pad, +10 for each leg making contact, -0.3 points for every frame the main engine fires, and a -100 penalty if the lander crashes. A score of 200 is generally considered "solved".
+
+3. Methodology & Architecture (DQN)To solve this environment, we use a Deep Q-Network (DQN), an algorithm that models the Q-function as a neural network to predict the expected future return of state-action pairs:
+
+Dual Networks: Standard DQN can overestimate Q-values, so the algorithm utilizes two identical networks: an "online" policy network that actively chooses actions, and a "target" network used to compute the loss and stabilize training.
+
+Experience Replay Buffer: Past transition experiences—composed of the state, action, reward, next state, and a boolean indicating if the episode is done—are stored in a buffer. Randomly sampling mini-batches from this buffer breaks correlations between consecutive samples, significantly improving data efficiency and training stability.
+
+Exploration vs. Exploitation: The agent uses an epsilon-greedy strategy. It starts with an exploration probability of $\epsilon = 1.0$, taking random actions to gather diverse experiences. Over time, epsilon decays, and the agent exploits its learned Q-values to choose the best actions.
+
+Network Architecture: We utilize a two-layer feed-forward Multi-Layer Perceptron (MLP) built with PyTorch, passing the 8-dimensional state vector through hidden dimensions with ReLU activation functions, outputting 4 Q-values corresponding to the discrete actions.
