@@ -1,0 +1,33 @@
+1. Objective
+To build a content-based recommendation engine that suggests similar movies to a user based on the characteristics of a movie they already like. This system will analyze the textual metadata of movies (like their genres and plot overviews) to find semantic similarities.
+
+2. Dataset Overview
+While enterprise systems use massive datasets like the TMDB 5000 Movie Dataset or MovieLens, this project uses a simulated foundational dataset directly integrated into the script for easy, out-of-the-box execution.
+
+Features Used: title, genres, and overview (plot summary).
+
+The logic applied in this script perfectly scales to large CSV datasets by replacing the get_sample_data() function with a simple pd.read_csv('tmdb_5000_movies.csv').
+
+3. Methodology & Architecture
+This project utilizes Natural Language Processing (NLP) to turn text into mathematical representations:
+
+Feature Combination:
+We concatenate the genres and overview columns into a single string called content. This creates a unified "document" representing the essence of each movie.
+
+TF-IDF Vectorization:
+
+TF (Term Frequency): Counts how often a word appears in a movie's content.
+
+IDF (Inverse Document Frequency): Penalizes highly frequent words (like "the", "a", or "movie") and assigns higher weights to rare, unique words that give the movie its specific identity.
+
+We use Scikit-learn's TfidfVectorizer to convert all movie texts into a massive mathematical matrix of TF-IDF scores.
+
+Cosine Similarity:
+Once we have mathematical vectors for every movie, we calculate the Cosine Similarity. This metric measures the cosine of the angle between two multi-dimensional vectors.
+
+A score of 1.0 means the movies are perfectly identical in content.
+
+A score closer to 0.0 means they share almost zero keywords or thematic elements.
+
+Recommendation Engine:
+When a user inputs a title (e.g., "Inception"), the system locates its vector, calculates the cosine similarity score against all other movie vectors, sorts them in descending order, and returns the top N highest-scoring matches.
