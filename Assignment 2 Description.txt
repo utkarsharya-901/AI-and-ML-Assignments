@@ -1,0 +1,44 @@
+1. Objective
+To build and train a Convolutional Neural Network (CNN) that can accurately classify images into 10 different categories using the PyTorch deep learning framework.
+
+2. Dataset Details
+The CIFAR-10 (Canadian Institute for Advanced Research) dataset is a standard benchmark in computer vision.
+
+Total Images: 60,000 color images (50,000 for training, 10,000 for testing).  
+PDF
+
+Image Dimensions: 32x32 pixels with 3 color channels (RGB).
+
+Classes (10): Airplane, Automobile, Bird, Cat, Deer, Dog, Frog, Horse, Ship, and Truck. There is an equal number of images for each class.  
+PDF
++ 1
+
+3. Methodology & Architecture
+Data Loading & Normalization:
+
+We use PyTorch's torchvision library to download and load the dataset.
+
+Images are transformed from PIL Images into PyTorch tensors (transforms.ToTensor()).
+
+The tensors are normalized (transforms.Normalize()) to a range of [-1, 1], which drastically improves numerical stability and helps the network train faster.  
+PDF
+
+CNN Architecture (The Model):
+
+Convolutional Layers (nn.Conv2d): These layers slide a kernel (filter) over the image to detect features like edges, shapes, and textures. The first layer takes the 3 RGB channels as input.  
+PDF
+
+Activation Function (ReLU): Used after each convolution to introduce non-linearity, allowing the model to learn complex patterns.  
+PDF
+
+Max Pooling (nn.MaxPool2d): Downsamples the image by taking the maximum value over a 2x2 window. This reduces computational complexity and prevents overfitting.
+
+Fully Connected Layers (nn.Linear): After feature extraction, the multi-dimensional tensor is flattened into a 1D vector and passed through standard linear neural network layers to map the features to the 10 final output classes.  
+PDF
+
+Training & Optimization:
+
+Loss Function: We use Cross-Entropy Loss (nn.CrossEntropyLoss), which is standard for multi-class classification.
+
+Optimizer: We use the Adam optimizer to iteratively adjust the network's weights based on the calculated gradients.
+
