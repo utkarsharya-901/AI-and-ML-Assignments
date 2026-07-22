@@ -1,0 +1,40 @@
+1. Objective
+To build and train a Convolutional Neural Network (CNN) capable of accurately identifying specific individuals from unconstrained, real-world face images using the PyTorch deep learning framework.
+
+2. Dataset Details
+The Labeled Faces in the Wild (LFW) dataset is a public benchmark for face verification and recognition, often referred to as "faces in the wild" because the images were collected from the internet under varied lighting, poses, expressions, and occlusions.
+
+Total Images: Over 13,000 images of faces collected from the web.
+
+Target Classes: To ensure our model has enough data to learn distinct facial features, the script filters the dataset to only include individuals who have at least 70 images in the database (e.g., Ariel Sharon, Colin Powell, Donald Rumsfeld, George W Bush, Gerhard Schroeder, Hugo Chavez, Tony Blair).
+
+Image Format: The dataset provides cropped, grayscale face images resized to a manageable dimension (typically 62x47 pixels in scikit-learn's implementation).
+
+3. Methodology & Architecture
+Data Loading & Preprocessing:
+
+The dataset is dynamically fetched using sklearn.datasets.fetch_lfw_people().
+
+Images are normalized by scaling pixel values from [0, 255] to [0, 1] for better network convergence.
+
+The dataset is reshaped into PyTorch's required standard tensor format of (Batch_Size, Channels, Height, Width) where Channels = 1 for grayscale.
+
+The dataset is split into an 80% training set and a 20% testing set, ensuring a proportional representation of each person (stratified split).
+
+CNN Architecture (The Model):
+
+3 Convolutional Layers (nn.Conv2d): To extract spatial features like facial edges (jawline, nose, eyes) and complex textures. Each layer progressively deepens from 32, to 64, to 128 feature maps.
+
+Batch Normalization (nn.BatchNorm2d): Added after each convolution to stabilize and accelerate the training process.
+
+Max Pooling (nn.MaxPool2d): Applied to reduce spatial dimensions, scaling the 62x47 image progressively down to 7x5 while retaining the most prominent facial features.
+
+Fully Connected Layers (nn.Linear): The final extracted features are flattened into a 1D tensor and passed through two linear layers to map them to the distinct output identities.
+
+Dropout (nn.Dropout): A rate of 0.4 is applied before the final output to prevent overfitting by randomly zeroing some of the elements of the input tensor during training.
+
+Training & Evaluation:
+
+The network is trained using the Adam Optimizer and Cross-Entropy Loss, minimizing the classification error over multiple epochs.
+
+Performance is evaluated using Overall Accuracy and a detailed Classification Report (Precision, Recall, F1-Score) for each specific person to see who the model recognizes best.
