@@ -1,0 +1,36 @@
+1. Objective
+To build and train a Convolutional Neural Network (CNN) that can automatically classify MRI scans into categories indicating the presence or absence of a brain tumor, aiding radiologists and medical professionals in rapid diagnostics.
+
+2. Dataset Setup and Structure
+For medical imaging projects, real-world datasets like the Brain MRI Images for Brain Tumor Detection dataset (commonly found on Kaggle) are highly recommended.
+
+Target Classes: Binary Classification -> Tumor (1) vs. No Tumor (0).
+
+Data Format: The dataset consists of .jpg or .png slices of MRI scans taken from different axial, coronal, or sagittal planes.
+
+(Note: The provided script includes a DummyMRIDataset class so you can test the neural network architecture immediately without downloading a massive dataset. You can swap this out with PyTorch's ImageFolder to load your own local MRI directories).
+
+3. Methodology & Architecture
+Data Preprocessing and Augmentation:
+
+Resizing: Medical images come in highly variable dimensions. All MRI scans are standardized and resized to 128x128 pixels.
+
+Data Augmentation: To prevent the model from overfitting on limited medical data, transformations like RandomHorizontalFlip() and RandomRotation() are applied. This mimics slight patient head tilts or scanning variations.
+
+Normalization: MRI scans are normalized based on ImageNet standard mean and standard deviation matrices.
+
+CNN Architecture (The Model):
+
+Convolutional Blocks (nn.Conv2d): 3 consecutive convolutional layers (progressing from 32, to 64, to 128 channels). These extract hierarchical features like distinct white matter contours, gray matter anomalies, and high-intensity tumor masses.
+
+Batch Normalization (nn.BatchNorm2d): Normalizes intermediate feature maps to accelerate network convergence—a critical step given the nuanced grayscale variance in MRI imagery.
+
+Max Pooling (nn.MaxPool2d): Downsamples the spatial dimensions from 128x128 down to 16x16, retaining only the dominant feature responses.
+
+Fully Connected Classifier: The dense network at the end processes the flattened spatial features into the final diagnostic decision (Tumor vs. No Tumor).
+
+Training & Optimization:
+
+Loss Function: CrossEntropyLoss is utilized to penalize the distance between the model's confidence scores and the actual ground-truth label.
+
+Optimizer: The Adam optimizer is used with a relatively low learning rate (0.0005) to ensure careful, stable convergence over complex medical image gradients.
