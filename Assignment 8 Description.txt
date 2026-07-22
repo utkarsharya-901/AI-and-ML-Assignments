@@ -1,0 +1,20 @@
+This project package is structured around the EcoTrace: Carbon Footprint Tracker. It sets up a web-based backend application designed to help individuals estimate their annual carbon emissions based on various lifestyle factors.
+
+Inside the extracted folder, you will find:
+
+app.py: A FastAPI application containing an /estimate endpoint that accepts a JSON payload of lifestyle metrics (like electricity usage and transport miles) and returns an emissions breakdown.
+
+render.yaml: The Infrastructure-as-Code (IaC) configuration. Render uses this file to automatically determine the environment, build command, and start command without manual dashboard setup.
+
+requirements.txt: The necessary Python dependencies (fastapi, uvicorn, pydantic).
+
+README.md: Quick instructions for the deployment workflow.
+
+Deployment Steps
+Initialize a Git repository inside the unzipped folder, commit all the files, and push them to a new GitHub repository.
+
+Log in to your Render dashboard.
+
+Click New + and select Blueprint.
+
+Connect your GitHub account and select the repository. Render will instantly recognize the render.yaml file and begin building the web service.
